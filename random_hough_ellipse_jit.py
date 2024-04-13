@@ -19,12 +19,12 @@ class RHTException(Exception):
         return self.message if self.message else "something wrong!"
 
 
-@njit
+@njit(cache=True)
 def average_candidate_weight(old_cand: float, new_cand: float, score: int) -> float:
     return (old_cand * score + new_cand) / (score + 1)
 
 
-@njit
+@njit(cache=True)
 def average_candidate(old_cand: Candidate, new_cand: Candidate) -> Candidate:
     score = old_cand[0] + 1
     return (
@@ -37,7 +37,7 @@ def average_candidate(old_cand: Candidate, new_cand: Candidate) -> Candidate:
     )
 
 
-@njit
+@njit(cache=True)
 def is_candidate_similar(
     old_cand: Candidate,
     new_cand: Candidate,
@@ -68,7 +68,7 @@ def is_candidate_similar(
     return True
 
 
-@njit
+@njit(cache=True)
 def find_center(pt: NDArray, edge: NDArray, line_fitting_area: int) -> NDArray:
     m, c = 0, 0
     m_arr = []
@@ -129,7 +129,7 @@ def find_center(pt: NDArray, edge: NDArray, line_fitting_area: int) -> NDArray:
     return center
 
 
-@njit
+@njit(cache=True)
 def calculate_rotation_angle(a: float, b: float, c: float) -> float:
     if a == c:
         angle = 0
@@ -144,7 +144,7 @@ def calculate_rotation_angle(a: float, b: float, c: float) -> float:
     return float(angle)
 
 
-@njit
+@njit(cache=True)
 def find_semi_axis(
     pt: NDArray,
     center: NDArray,
@@ -195,7 +195,7 @@ def find_semi_axis(
     raise RHTException("no valid semi axis!")
 
 
-@njit
+@njit(cache=True)
 def ellipse_out_of_mask(
     mask_shape: tuple[int, int],
     center: NDArray,
@@ -227,7 +227,7 @@ def ellipse_out_of_mask(
     )  # type: ignore
 
 
-@njit
+@njit(cache=True)
 def random_hough_ellipse(
     edge_img: NDArray,
     max_iter: int,
